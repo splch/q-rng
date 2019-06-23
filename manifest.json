@@ -1,19 +1,11 @@
 {
   "name": "q-rng",
   "description": "Quantum random number generator.",
-  "version": "0.00",
-  "manifest_version": 2,
-  "content_scripts": [
-    {
-      "js": [
-        "background.js",
-        "jquery.js"
-      ]
-    }
-  ],
+  "version": "0.01",
   "browser_action": {
     "default_title": "q-rng",
     "default_icon": "icon.png",
     "default_popup": "popup.html"
-  }
+  },
+  "manifest_version": 2
 }

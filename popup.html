@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="jquery.js" defer></script>
         <script src="popup.js" defer></script>
     </head>
-    <body>
-        <h2>Quantum RNG</h2>
+    <body style="width: 200px; height: 150px;">
+        <h2>q-rng</h2>
+        <div style="height: 75%;">
+            <div style="position: absolute; width: 50%; left: 0;">
+                <p style="margin: 0px;" id="qrn"></p>
+            </div>
+            <div style="position: absolute; width: 50%; right: 0;">
+                <p style="margin: 0px;">Min</p>
+                <input id="min" placeholder="0" type="text" maxlength="5" size="5">
+                <p style="margin: 0px;">Max</p>
+                <input id="max" placeholder="65535" type="text" maxlength="5" size="5">
+            </div>
+        </div>
+        <div style="position: absolute; bottom: 0;">
+            <button id="gen">Generate</button>
+        </div>
     </body>
 </html>
