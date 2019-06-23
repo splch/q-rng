@@ -16,8 +16,7 @@ document.getElementById("gen").onclick = function() {
     };
     $.ajax(settings).always(function (data) {
         console.log(data);
-        let qrn = data.data[0] / 65536;
-        qrn = Math.floor(qrn * (max - min + 1) + min);
+        qrn = Math.round(data.data[0] / 65535 * (max - min) + min);
         document.getElementById("qrn").innerHTML = qrn;
     });
 }
