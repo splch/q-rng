@@ -1,26 +1,5 @@
 let load;
 
-function _check(min, max) {
-    if (isNaN(min)) {
-        min = 0;
-    }
-    if (isNaN(max)) {
-        max = 0;
-    }
-    if (max - min > 65536) {
-        document.getElementById("qrn").innerHTML = "&#128565;";
-        return;
-    }
-    else if (min > max) {
-        let t = min;
-        min = max;
-        max = t;
-        document.getElementById("min").value = min;
-        document.getElementById("max").value = max;
-    }
-    return [min, max];
-}
-
 function _request(min, max, len) {
     clearInterval(load);
     load = setInterval(function() {
@@ -38,6 +17,27 @@ function _request(min, max, len) {
     xhttp.send();
 }
 
+function _check(min, max) {
+    if (isNaN(min)) {
+        min = 0;
+    }
+    if (isNaN(max)) {
+        max = 0;
+    }
+    if (min > max) {
+        let t = min;
+        min = max;
+        max = t;
+        document.getElementById("min").value = min;
+        document.getElementById("max").value = max;
+    }
+    if (max - min > 65536) {
+        document.getElementById("qrn").innerHTML = "&#128565;";
+        return;
+    }
+    return [min, max];
+}
+
 function setQRN() {
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
@@ -45,7 +45,7 @@ function setQRN() {
     if (vals) {
         min = vals[0];
         max = vals[1];
-        _request(min, max, 2);
+        _request(min, max, 1);
     }
 }
 
