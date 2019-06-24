@@ -31,7 +31,7 @@ function _check(min, max) {
         document.getElementById("min").value = min;
         document.getElementById("max").value = max;
     }
-    if (max - min > 65536) {
+    if (max - min > 65535) {
         document.getElementById("qrn").innerHTML = "&#128565;";
         return;
     }
