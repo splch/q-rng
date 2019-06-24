@@ -3,22 +3,42 @@
     <head>
         <script src="jquery.js" defer></script>
         <script src="popup.js" defer></script>
+        <style>
+            .btn {
+                background-color: #3B78E7;
+                border: none;
+                color: white;
+                padding: 10px 14px;
+                font-size: 14px;
+                cursor: pointer;
+                width: 100%;
+            }
+            .btn:focus {
+                outline: none;
+            }
+            .text {
+                margin: 2px;
+                color: #aaaaaa;
+                font-size: 13px;
+            }
+            .input {
+                font-size: 10px;
+            }
+        </style>
     </head>
-    <body style="width: 200px; height: 150px;">
-        <h2>q-rng</h2>
+    <body style="width: 175px; height: 125px;">
         <div style="height: 75%;">
             <div style="position: absolute; width: 50%; left: 0;">
-                <p style="margin: 0px;" id="qrn"></p>
+                <p id="qrn" title="Precision of 65,536 numbers" style="margin: 25% auto 25% auto; font-size: 25px; text-align: center;">3</p>
             </div>
             <div style="position: absolute; width: 50%; right: 0;">
-                <p style="margin: 0px;">Min</p>
-                <input id="min" placeholder="0" type="text" maxlength="5" size="5">
-                <p style="margin: 0px;">Max</p>
-                <input id="max" placeholder="65535" type="text" maxlength="5" size="5">
+                <p class="text">Min</p>
+                <input id="min" class="input" type="text" maxlength="6" size="6" value=1>
+                <p class="text">Max</p>
+                <input id="max" class="input" type="text" maxlength="6" size="6" value=10>
             </div>
         </div>
-        <div style="position: absolute; bottom: 0;">
-            <button id="gen">Generate</button>
-        </div>
+        <button id="gen" class="btn" unselectable="on">GENERATE</button>
+        <!-- <small><a href="https://qrng.anu.edu.au/" target="_blank">Learn More</a></small> -->
     </body>
 </html>

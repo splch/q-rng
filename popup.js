@@ -1,6 +1,5 @@
 document.getElementById("gen").onclick = function() {
-    let min = parseInt(document.getElementById("min").value);
-    let max = parseInt(document.getElementById("max").value);
+    document.getElementById("qrn").innerHTML = '';
     let settings = {
         "async": true,
         "crossDomain": true,
@@ -15,8 +14,11 @@ document.getElementById("gen").onclick = function() {
         }
     };
     $.ajax(settings).always(function (data) {
-        console.log(data);
-        qrn = Math.round(data.data[0] / 65535 * (max - min) + min);
-        document.getElementById("qrn").innerHTML = qrn;
+        let min = parseInt(document.getElementById("min").value);
+        let max = parseInt(document.getElementById("max").value);
+        let qrn = Math.round(data.data[0] / 65535 * (max - min) + min);
+        if (qrn) {
+            document.getElementById("qrn").innerHTML = qrn;
+        }
     });
 }
