@@ -50,3 +50,5 @@ function setQRN() {
 }
 
 document.getElementById("gen").onclick = setQRN;
+
+document.getElementById("gen").click();
