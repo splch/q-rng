@@ -2,7 +2,7 @@ function setQRN() {
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
     document.getElementById("qrn").innerHTML = '';
-    if (!min || !max) {
+    if (min === "undefined" || max === "undefined") {
         document.getElementById("qrn").innerHTML = 0;
     }
     else if (max - min > 65536) {
