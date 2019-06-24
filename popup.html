@@ -5,7 +5,7 @@
         <script src="popup.js" defer></script>
         <style>
             .btn {
-                background-color: #3B78E7;
+                background-color: #3b78e7;
                 border: none;
                 color: white;
                 padding: 10px 14px;
@@ -22,20 +22,28 @@
                 font-size: 13px;
             }
             .input {
-                font-size: 10px;
+                font-size: 12px;
+                border-top: none;
+                border-right: none;
+                border-left: none;
+                border-color: #aaaaaa;
+            }
+            .input:focus {
+                outline: none;
+                border-color: #3b78e7;
             }
         </style>
     </head>
     <body style="width: 175px; height: 125px;">
         <div style="height: 75%;">
-            <div style="position: absolute; width: 50%; left: 0;">
-                <p id="qrn" title="Precision of 65,536 numbers" style="margin: 25% auto 25% auto; font-size: 25px; text-align: center;">3</p>
+            <div style="position: absolute; width: 60%; left: 0px;">
+                <p id="qrn" title="Precision of 65,536 numbers" style="margin-top: 25%; font-size: 30px; text-align: center;">3</p>
             </div>
-            <div style="position: absolute; width: 50%; right: 0;">
+            <div style="position: absolute; width: 40%; right: 0px;">
                 <p class="text">Min</p>
-                <input id="min" class="input" type="text" maxlength="6" size="6" value=1>
+                <input id="min" class="input" type="text" maxlength="6" size="7" value="1" placeholder="0">
                 <p class="text">Max</p>
-                <input id="max" class="input" type="text" maxlength="6" size="6" value=10>
+                <input id="max" class="input" type="text" maxlength="6" size="7" value="10" placeholder="65535">
             </div>
         </div>
         <button id="gen" class="btn" unselectable="on">GENERATE</button>
