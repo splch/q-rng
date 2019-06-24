@@ -8,8 +8,6 @@ function check(min, max) {
     if (max - min > 65536) {
         document.getElementById("qrn").innerHTML = "&#128565;";
     }
-            }
-        };
     else if (min > max) {
         let t = min;
         min = max;
