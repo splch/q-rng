@@ -8,7 +8,7 @@ function _request(min, max) {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            let qrn = parseInt(JSON.parse(this.responseText).data[0]);
+            let qrn = JSON.parse(this.responseText).data[0];
             clearInterval(load);
             document.getElementById("qrn").innerHTML = Math.round(qrn / 65535 * (max - min) + min); // scale the random number
         }
