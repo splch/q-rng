@@ -1,6 +1,6 @@
 let load;
 
-function _request(min, max, len) {
+function _request(min, max) {
     clearInterval(load);
     load = setInterval(function() {
         document.getElementById("qrn").innerHTML = Math.floor(Math.random() * (max - min + 1) ) + min;;
@@ -8,12 +8,12 @@ function _request(min, max, len) {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            let qrn = parseInt(this.responseText.split(/\[(.*?)\]/)[1]);
+            let qrn = parseInt(JSON.parse(this.responseText).data[0]);
             clearInterval(load);
             document.getElementById("qrn").innerHTML = Math.round(qrn / 65535 * (max - min) + min); // scale the random number
         }
     };
-    xhttp.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+String(len)+"&type=uint16", true);
+    xhttp.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
     xhttp.send();
 }
 
@@ -45,7 +45,7 @@ function setQRN() {
     if (vals) {
         min = vals[0];
         max = vals[1];
-        _request(min, max, 1);
+        _request(min, max);
     }
 }
 
