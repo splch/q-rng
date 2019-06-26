@@ -7,7 +7,7 @@ function _request(min, max) {
     }, 100);
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             let qrn = JSON.parse(this.responseText).data[0];
             clearInterval(load);
             document.getElementById("qrn").innerHTML = Math.round(qrn / 65535 * (max - min) + min); // scale the random number
@@ -23,6 +23,10 @@ function _check(min, max) {
     }
     if (isNaN(max)) {
         max = 0;
+    }
+    if (min === max) {
+        document.getElementById("qrn").innerHTML = min;
+        return;
     }
     if (min > max) {
         let t = min;
