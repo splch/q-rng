@@ -19,7 +19,7 @@ function _request(min, max) {
         }
         setTimeout(function() {
             clearInterval(load);
-            document.getElementById("rn").innerHTML = Math.floor(rn * (max - min) + min);
+            document.getElementById("rn").innerHTML = Math.floor(prn * (max - min) + min);
         }, 300);
         document.getElementById("rn").title = "No internet connection: PRNG";
     }
