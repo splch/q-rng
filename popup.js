@@ -15,7 +15,7 @@ function _request(min, max) {
             prn = _prng(prn * qrn);
         }
         else {
-            prn = _prng(prn);
+            prn = _prng(prn * 12345);
         }
         setTimeout(function() {
             clearInterval(load);
