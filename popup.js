@@ -1,31 +1,29 @@
 let load, qrn;
 
 function _prng(seed) {
-    seed = seed % 2147483647;
-    if (seed <= 1e-8) {
-        seed = 2147483647;
-    }
-
     return seed * 16807 % 2147483647 / 2147483647;
 }
 
 function _request(min, max) {
     clearInterval(load);
+    load = setInterval(function() {
+        document.getElementById("qrn").innerHTML = Math.floor(Math.random() * (max - min + 1)) + min;
+    }, 100);
     if (navigator.onLine === false) {
-        let rn = Math.floor(10 * Math.random()) + 1;
+        let rn = Math.floor(Math.random() * 32768) + 1;
         if (qrn) {
-            rn = _prng(rn * qrn * 1e3);
+            rn = _prng(rn * qrn);
         }
         else {
-            rn = _prng(rn * 1e8);
+            rn = _prng(rn);
         }
-        document.getElementById("qrn").innerHTML = Math.round(rn * (max - min) + min);
+        setTimeout(function() {
+            clearInterval(load);
+            document.getElementById("qrn").innerHTML = Math.floor(rn * (max - min) + min);
+        }, 300);
         document.getElementById("qrn").title = "No internet connection: PRNG.";
     }
     else {
-        load = setInterval(function() {
-            document.getElementById("qrn").innerHTML = Math.floor(Math.random() * (max - min + 1) ) + min;
-        }, 100);
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
