@@ -7,21 +7,21 @@ function _prng(seed) {
 function _request(min, max) {
     clearInterval(load);
     load = setInterval(function() {
-        document.getElementById("qrn").innerHTML = Math.floor(Math.random() * (max - min + 1)) + min;
+        document.getElementById("rn").innerHTML = Math.floor(Math.random() * (max - min + 1)) + min;
     }, 100);
     if (navigator.onLine === false) {
-        let rn = Math.floor(Math.random() * 32768) + 1;
+        let prn = Math.floor(Math.random() * 32768) + 1;
         if (qrn) {
-            rn = _prng(rn * qrn);
+            prn = _prng(prn * qrn);
         }
         else {
-            rn = _prng(rn);
+            prn = _prng(prn);
         }
         setTimeout(function() {
             clearInterval(load);
-            document.getElementById("qrn").innerHTML = Math.floor(rn * (max - min) + min);
+            document.getElementById("rn").innerHTML = Math.floor(rn * (max - min) + min);
         }, 300);
-        document.getElementById("qrn").title = "No internet connection: PRNG";
+        document.getElementById("rn").title = "No internet connection: PRNG";
     }
     else {
         let xhttp = new XMLHttpRequest();
@@ -29,8 +29,8 @@ function _request(min, max) {
             if (this.readyState === 4 && this.status === 200) {
                 qrn = JSON.parse(this.responseText).data[0];
                 clearInterval(load);
-                document.getElementById("qrn").innerHTML = Math.round(qrn / 65535 * (max - min) + min);
-                document.getElementById("qrn").title = "Internet connection: QRNG";
+                document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (max - min) + min);
+                document.getElementById("rn").title = "Internet connection: QRNG";
             }
         };
         xhttp.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
@@ -46,7 +46,7 @@ function _check(min, max) {
         max = 0;
     }
     if (min === max) {
-        document.getElementById("qrn").innerHTML = min;
+        document.getElementById("rn").innerHTML = min;
         return;
     }
     if (min > max) {
@@ -57,7 +57,7 @@ function _check(min, max) {
         document.getElementById("max").value = max;
     }
     if (max - min > 65535) {
-        document.getElementById("qrn").innerHTML = "&#128565;";
+        document.getElementById("rn").innerHTML = "&#128565;";
         return;
     }
     return [min, max];
