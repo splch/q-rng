@@ -21,7 +21,7 @@ function _request(min, max) {
             clearInterval(load);
             document.getElementById("qrn").innerHTML = Math.floor(rn * (max - min) + min);
         }, 300);
-        document.getElementById("qrn").title = "No internet connection: PRNG.";
+        document.getElementById("qrn").title = "No internet connection: PRNG";
     }
     else {
         let xhttp = new XMLHttpRequest();
@@ -30,7 +30,7 @@ function _request(min, max) {
                 qrn = JSON.parse(this.responseText).data[0];
                 clearInterval(load);
                 document.getElementById("qrn").innerHTML = Math.round(qrn / 65535 * (max - min) + min);
-                document.getElementById("qrn").title = "Internet connection: QRNG.";
+                document.getElementById("qrn").title = "Internet connection: QRNG";
             }
         };
         xhttp.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
