@@ -4,10 +4,10 @@ function _prng(seed) {
     return seed * 16807 % 2147483647 / 2147483647;
 }
 
-function _request(min, max) {
+function _request(vals) {
     clearInterval(load);
     load = setInterval(function() {
-        document.getElementById("rn").innerHTML = Math.floor(Math.random() * (max - min + 1)) + min;
+        document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
     }, 100);
     if (navigator.onLine === false) {
         let prn = Math.floor(Math.random() * 32768) + 1;
@@ -19,7 +19,7 @@ function _request(min, max) {
         }
         setTimeout(function() {
             clearInterval(load);
-            document.getElementById("rn").innerHTML = Math.floor(prn * (max - min) + min);
+            document.getElementById("rn").innerHTML = Math.floor(prn * (vals[1] - vals[0]) + vals[0]);
         }, 250);
         document.getElementById("rn").title = "No internet connection: PRNG";
     }
@@ -29,7 +29,7 @@ function _request(min, max) {
             if (this.readyState === 4 && this.status === 200) {
                 qrn = JSON.parse(this.responseText).data[0];
                 clearInterval(load);
-                document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (max - min) + min);
+                document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (vals[1] - vals[0]) + vals[0]);
                 document.getElementById("rn").title = "Internet connection: QRNG";
             }
         };
@@ -68,9 +68,7 @@ function setQRN() {
     let max = parseInt(document.getElementById("max").value);
     let vals = _check(min, max);
     if (vals) {
-        min = vals[0];
-        max = vals[1];
-        _request(min, max);
+        _request(vals);
     }
 }
 
