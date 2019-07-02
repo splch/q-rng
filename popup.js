@@ -6,12 +6,12 @@ function _prng(vals) {
         prn = prn * qrn * 16807 % 2147483647 / 2147483647;
     }
     else {
-        prn = prn * 16807 % 2147483647 / 2147483647;
+        prn = prn * 12345 * 16807 % 2147483647 / 2147483647;
     }
     setTimeout(function() {
         clearInterval(load);
         document.getElementById("rn").innerHTML = Math.floor(prn * (vals[1] - vals[0]) + vals[0]);
-    }, 250);
+    }, 400);
     document.getElementById("rn").title = "No internet connection: PRNG";
 }
 
@@ -20,24 +20,22 @@ function _request(vals) {
     load = setInterval(function() {
         document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
     }, 100);
-    if (navigator.onLine === false) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
+    xhr.timeout = 5000;
+    xhr.onload = function() {
+        qrn = JSON.parse(this.responseText).data[0];
+        clearInterval(load);
+        document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (vals[1] - vals[0]) + vals[0]);
+        document.getElementById("rn").title = "Internet connection: QRNG";
+    };
+    xhr.ontimeout = function() {
+        _prng(vals);
+    };
+    xhr.onerror = function() {
         _prng(vals);
     }
-    else {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
-        xhr.timeout = 5000;
-        xhr.onload = function() {
-            qrn = JSON.parse(this.responseText).data[0];
-            clearInterval(load);
-            document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (vals[1] - vals[0]) + vals[0]);
-            document.getElementById("rn").title = "Internet connection: QRNG";
-        };
-        xhr.ontimeout = function() {
-            _prng(vals);
-        };
-        xhr.send(null);
-    }
+    xhr.send(null);
 }
 
 function _check(min, max) {
