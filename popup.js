@@ -3,6 +3,7 @@ let load, qrn;
 function _prng(vals) {
     let prn = Math.floor(Math.random() * 8177608);
     console.log("prn = ", prn);
+    if (!qrn) {
         qrn = Math.floor(Math.random() * 65536);
     }
     console.log("qrn = ", qrn);
