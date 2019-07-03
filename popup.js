@@ -2,22 +2,17 @@ let load, qrn;
 
 function _prng(vals) {
     let prn = Math.floor(Math.random() * 8177608);
-    console.log("prn = ", prn);
     if (!qrn) {
         qrn = Math.floor(Math.random() * 65536);
     }
-    console.log("qrn = ", qrn);
     let seed = qrn * prn;
     if (seed === 0) {
         seed += 2147483646;
     }
-    console.log("seed = ", seed);
     prn = seed % 2147483647 * 16807 % 2147483647;
-    console.log("rn = ", prn);
     setTimeout(function() {
         clearInterval(load);
-        prn = Math.floor(prn / 2147483647 * (vals[1] - vals[0]) + vals[0]);
-        console.log("final rn = ", prn);
+        prn = Math.floor(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
         document.getElementById("rn").innerHTML = prn;
     }, 400);
     document.getElementById("rn").title = "No internet connection: PRNG";
