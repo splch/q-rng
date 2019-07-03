@@ -1,16 +1,23 @@
 let load, qrn;
 
 function _prng(vals) {
-    let prn = Math.floor(Math.random() * 32768) + 1;
-    if (qrn) {
-        prn = prn * qrn * 16807 % 2147483647 / 2147483647;
+    let prn = Math.floor(Math.random() * 8177608);
+    console.log("prn = ", prn);
+        qrn = Math.floor(Math.random() * 65536);
     }
-    else {
-        prn = prn * 12345 * 16807 % 2147483647 / 2147483647;
+    console.log("qrn = ", qrn);
+    let seed = qrn * prn;
+    if (seed === 0) {
+        seed += 2147483646;
     }
+    console.log("seed = ", seed);
+    prn = seed % 2147483647 * 16807 % 2147483647;
+    console.log("rn = ", prn);
     setTimeout(function() {
         clearInterval(load);
-        document.getElementById("rn").innerHTML = Math.floor(prn * (vals[1] - vals[0]) + vals[0]);
+        prn = Math.floor(prn / 2147483647 * (vals[1] - vals[0]) + vals[0]);
+        console.log("final rn = ", prn);
+        document.getElementById("rn").innerHTML = prn;
     }, 400);
     document.getElementById("rn").title = "No internet connection: PRNG";
 }
@@ -34,8 +41,8 @@ function _request(vals) {
     };
     xhr.onerror = function() {
         _prng(vals);
-    }
-    xhr.send(null);
+    };
+    xhr.send();
 }
 
 function _check(min, max) {
