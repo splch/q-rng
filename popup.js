@@ -11,8 +11,8 @@ function _prng(vals) {
     }
     prn = seed % 2147483647 * 16807 % 2147483647;
     setTimeout(function() {
-        clearInterval(load);
         prn = Math.floor(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
+        clearInterval(load);
         document.getElementById("rn").innerHTML = prn;
     }, 400);
     document.getElementById("rn").title = "No internet connection: PRNG";
