@@ -6,7 +6,7 @@ function _prng(vals) {
         prn = prn * qrn;
     }
     else {
-        prn = prn * Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 65536);
+        prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
     }
     if (prn === 0) {
         prn += 2147483646;
