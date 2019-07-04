@@ -1,12 +1,12 @@
 let load, qrn;
 
 function _prng(vals) {
-    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295 * 8177608);
+    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
     if (qrn) {
         prn = prn * qrn;
     }
     else {
-        prn = prn * Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295 * 65536);
+        prn = prn * Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 65536);
     }
     if (prn === 0) {
         prn += 2147483646;
