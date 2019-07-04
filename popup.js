@@ -26,7 +26,7 @@ function _request(vals) {
     }, 100);
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
-    xhr.timeout = 5000;
+    xhr.timeout = 1600;
     xhr.onload = function() {
         qrn = JSON.parse(this.responseText).data[0];
         clearInterval(load);
