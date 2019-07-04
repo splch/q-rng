@@ -1,12 +1,12 @@
 let load, qrn;
 
 function _prng(vals) {
-    let prn = Math.floor(Math.random() * 8177608);
+    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295 * 8177608);
     if (qrn) {
         prn = prn * qrn;
     }
     else {
-        prn = prn * Math.floor(Math.random() * 65536);
+        prn = prn * Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295 * 65536);
     }
     if (prn === 0) {
         prn += 2147483646;
@@ -14,7 +14,7 @@ function _prng(vals) {
     prn = prn % 2147483647 * 16807 % 2147483647;
     setTimeout(function() {
         clearInterval(load);
-        document.getElementById("rn").innerHTML = Math.floor(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
+        document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
     }, 400);
     document.getElementById("rn").title = "No internet connection: PRNG";
 }
