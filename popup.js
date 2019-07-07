@@ -15,8 +15,8 @@ function _prng(vals) {
     setTimeout(function() {
         clearInterval(load);
         document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
+        document.getElementById("rn").title = "No internet connection: PRNG";
     }, 400);
-    document.getElementById("rn").title = "No internet connection: PRNG";
 }
 
 function _request(vals) {
