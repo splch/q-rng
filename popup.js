@@ -15,7 +15,7 @@ function _prng(vals) {
     setTimeout(function() {
         clearInterval(load);
         document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
-        document.getElementById("rn").title = "No internet connection: PRNG";
+        document.getElementById("rn").title = "Offline: PRNG";
     }, 400);
 }
 
@@ -31,7 +31,7 @@ function _request(vals) {
         qrn = JSON.parse(this.responseText).data[0];
         clearInterval(load);
         document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (vals[1] - vals[0]) + vals[0]);
-        document.getElementById("rn").title = "Internet connection: QRNG";
+        document.getElementById("rn").title = "Online: QRNG";
     };
     xhr.ontimeout = function() {
         _prng(vals);
