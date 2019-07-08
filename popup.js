@@ -1,12 +1,12 @@
 function _prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
     if (qrn) {
-        document.getElementById("rn").title = "Online: QRNG";
+        document.getElementById("rn").title = "QRNG";
         load.index++;
         prn = prn * qrn[load.index % 10];
     }
     else {
-        document.getElementById("rn").title = "Offline: PRNG";
+        document.getElementById("rn").title = "PRNG";
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
     }
     if (prn === 0) {
@@ -30,7 +30,7 @@ function _request(vals) {
     xhr.send();
     setTimeout(function() {
         _prng(vals);
-    }, 1000)
+    }, 700)
 }
 
 function _check(min, max) {
