@@ -3,9 +3,13 @@ let load, qrn;
 function _prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
     if (qrn) {
-        prn = prn * qrn;
+        document.getElementById("rn").title = "Online: QRNG";
+        document.getElementById("rn").index++;
+        let i = document.getElementById("rn").index % 10;
+        prn = prn * qrn[i];
     }
     else {
+        document.getElementById("rn").title = "Offline: PRNG";
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
     }
     if (prn === 0) {
@@ -15,7 +19,6 @@ function _prng(vals) {
     setTimeout(function() {
         clearInterval(load);
         document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
-        document.getElementById("rn").title = "Offline: PRNG";
     }, 400);
 }
 
@@ -25,21 +28,13 @@ function _request(vals) {
         document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
     }, 100);
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16", true);
-    xhr.timeout = 1600;
+    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=10&type=uint16", true);
     xhr.onload = function() {
-        qrn = JSON.parse(this.responseText).data[0];
-        clearInterval(load);
-        document.getElementById("rn").innerHTML = Math.round(qrn / 65535 * (vals[1] - vals[0]) + vals[0]);
-        document.getElementById("rn").title = "Online: QRNG";
-    };
-    xhr.ontimeout = function() {
-        _prng(vals);
-    };
-    xhr.onerror = function() {
-        _prng(vals);
+        qrn = JSON.parse(this.responseText).data;
+        console.log(qrn);
     };
     xhr.send();
+    _prng(vals);
 }
 
 function _check(min, max) {
@@ -77,5 +72,6 @@ function setQRN() {
 }
 
 document.getElementById("gen").onclick = setQRN;
+document.getElementById("rn").index = 0;
 
 setQRN();
