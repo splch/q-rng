@@ -10,7 +10,7 @@ function _prng(vals) {
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
     }
     if (prn === 0) {
-        prn += 2147483646;
+        prn += Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483647);
     }
     prn = prn % 2147483647 * 16807 % 2147483647;
     clearInterval(load.interval);
