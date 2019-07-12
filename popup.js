@@ -1,9 +1,9 @@
-function _prng(vals) {
+function prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
-    if (qrn) {
+    if (rn.qrn) {
         document.getElementById("rn").title = "QRNG";
-        load.index++;
-        prn = prn * qrn[load.index % 10];
+        rn.index++;
+        prn = prn * rn.qrn[rn.index % 10];
     }
     else {
         document.getElementById("rn").title = "PRNG";
@@ -13,27 +13,27 @@ function _prng(vals) {
         prn += Math.ceil((crypto.getRandomValues(new Uint32Array(1))[0] + 1) / 4294967296 * 2147483646);
     }
     prn = prn % 2147483647 * 16807 % 2147483647;
-    clearInterval(load.interval);
+    clearInterval(rn.interval);
     document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
 }
 
-function _request(vals) {
-    clearInterval(load.interval);
-    load.interval = setInterval(function() {
+function request(vals) {
+    clearInterval(rn.interval);
+    rn.interval = setInterval(function() {
         document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
     }, 100);
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=10&type=uint16", true);
     xhr.onload = function() {
-        qrn = JSON.parse(this.responseText).data;
+        rn.qrn = JSON.parse(this.responseText).data;
     };
     xhr.send();
     setTimeout(function() {
-        _prng(vals);
+        prng(vals);
     }, 700)
 }
 
-function _check(min, max) {
+function check(min, max) {
     if (isNaN(min)) {
         min = 0;
     }
@@ -61,14 +61,14 @@ function _check(min, max) {
 function setQRN() {
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
-    let vals = _check(min, max);
+    let vals = check(min, max);
     if (vals) {
-        _request(vals);
+        request(vals);
     }
 }
 
-let qrn, load = new Object();
-load.index = 0;
+let rn = new Object();
+rn.index = 0;
 document.getElementById("gen").onclick = setQRN;
 
 setQRN();
