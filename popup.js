@@ -46,7 +46,7 @@ function check(min, max) {
 }
 
 function setQRN() {
-    document.body.style.cursor = "progress";
+    document.body.style.cursor = "wait";
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
     let vals = check(min, max);
