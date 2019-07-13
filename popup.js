@@ -1,15 +1,12 @@
 function prng(vals) {
-    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 137441050657);
+    let prn = window.crypto.getRandomValues(new Uint32Array(1))[0];
     if (rn.qrn) {
         prn = prn * rn.qrn[rn.index++ % 15];
     }
     else {
-        prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
+        prn = prn * window.crypto.getRandomValues(new Uint16Array(1))[0];
     }
-    if (prn === 0) {
-        prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
-    }
-    document.getElementById("rn").innerHTML = Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (vals[1] - vals[0] + 1) + vals[0]);
+    document.getElementById("rn").innerHTML = Math.floor(prn % 65536 / 65536 * (vals[1] - vals[0] + 1) + vals[0]);
 }
 
 function request() {
@@ -58,8 +55,6 @@ function setQRN() {
     }
 }
 
-let rn = new Object();
-rn.index = 0;
+let rn = {"index": 0};
 document.getElementById("gen").onclick = setQRN;
-
 setQRN();
