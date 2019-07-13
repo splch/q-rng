@@ -1,7 +1,7 @@
 function prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 137441050657);
     if (rn.qrn) {
-        prn = prn * rn.qrn[rn.index++ % 10];
+        prn = prn * rn.qrn[rn.index++ % 15];
     }
     else {
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
@@ -34,9 +34,7 @@ function check(min, max) {
         return;
     }
     if (min > max) {
-        let t = min;
-        min = max;
-        max = t;
+        [min, max] = [max, min];
         document.getElementById("min").value = min;
         document.getElementById("max").value = max;
     }
