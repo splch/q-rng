@@ -23,7 +23,7 @@ function request(vals) {
         document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
     }, 100);
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=10&type=uint16", true);
+    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
     };
