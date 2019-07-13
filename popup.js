@@ -1,36 +1,27 @@
 function prng(vals) {
-    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
+    let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 137441050657);
     if (rn.qrn) {
-        document.getElementById("rn").title = "QRNG";
         prn = prn * rn.qrn[rn.index % 10];
         rn.index++;
     }
     else {
-        document.getElementById("rn").title = "PRNG";
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
     }
     if (prn === 0) {
-        prn = Math.ceil((crypto.getRandomValues(new Uint32Array(1))[0] + 1) / 4294967296 * 2147483646);
+        prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
     }
     prn = prn % 2147483647 * 16807 % 2147483647;
-    clearInterval(rn.interval);
-    document.getElementById("rn").innerHTML = Math.round(prn / 2147483646 * (vals[1] - vals[0]) + vals[0]);
+    document.getElementById("rn").innerHTML = Math.floor(prn / 2147483646 * (vals[1] - vals[0] + 1) + vals[0]);
 }
 
-function request(vals) {
-    clearInterval(rn.interval);
-    rn.interval = setInterval(function() {
-        document.getElementById("rn").innerHTML = Math.floor(Math.random() * (vals[1] - vals[0] + 1)) + vals[0];
-    }, 100);
+function request() {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
+        document.body.style.cursor = "auto";
     };
     xhr.send();
-    setTimeout(function() {
-        prng(vals);
-    }, 700)
 }
 
 function check(min, max) {
@@ -59,11 +50,15 @@ function check(min, max) {
 }
 
 function setQRN() {
+    document.body.style.cursor = "progress";
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
     let vals = check(min, max);
     if (vals) {
-        request(vals);
+        request();
+        setTimeout(function() {
+            prng(vals);
+        }, 700);
     }
 }
 
