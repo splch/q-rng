@@ -2,8 +2,8 @@ function prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 8177608);
     if (rn.qrn) {
         document.getElementById("rn").title = "QRNG";
-        rn.index++;
         prn = prn * rn.qrn[rn.index % 10];
+        rn.index++;
     }
     else {
         document.getElementById("rn").title = "PRNG";
