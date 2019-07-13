@@ -1,8 +1,7 @@
 function prng(vals) {
     let prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 137441050657);
     if (rn.qrn) {
-        prn = prn * rn.qrn[rn.index % 10];
-        rn.index++;
+        prn = prn * rn.qrn[rn.index++ % 10];
     }
     else {
         prn = prn * crypto.getRandomValues(new Uint16Array(1))[0];
@@ -10,8 +9,7 @@ function prng(vals) {
     if (prn === 0) {
         prn = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
     }
-    prn = prn % 2147483647 * 16807 % 2147483647;
-    document.getElementById("rn").innerHTML = Math.floor(prn / 2147483646 * (vals[1] - vals[0] + 1) + vals[0]);
+    document.getElementById("rn").innerHTML = Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (vals[1] - vals[0] + 1) + vals[0]);
 }
 
 function request() {
