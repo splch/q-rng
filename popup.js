@@ -56,7 +56,7 @@ function setQRN() {
         request();
         setTimeout(function() {
             prng(vals);
-        }, 700);
+        }, 500);
     }
 }
 
