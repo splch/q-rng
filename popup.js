@@ -1,4 +1,4 @@
-function prng(vals) {
+function prng(bounds) {
     let prn = window.crypto.getRandomValues(new Uint32Array(1))[0];
     if (rn.qrn) {
         prn = prn * rn.qrn[rn.index++ % 15];
@@ -9,17 +9,20 @@ function prng(vals) {
     if (prn === 0) {
         prn = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
     }
-    document.getElementById("rn").innerHTML = Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (vals[1] - vals[0] + 1) + vals[0]);
+    document.getElementById("rn").innerHTML = Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
 
-function request() {
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
-    xhr.onload = function() {
-        rn.qrn = JSON.parse(this.responseText).data;
-        document.body.style.cursor = "auto";
-    };
-    xhr.send();
+function request(web) {
+    if (web) {
+        document.body.style.cursor = "progress";
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
+        xhr.onload = function() {
+            rn.qrn = JSON.parse(this.responseText).data;
+            document.body.style.cursor = "auto";
+        };
+        xhr.send();
+    }
 }
 
 function check(min, max) {
@@ -48,12 +51,11 @@ function check(min, max) {
 function setQRN() {
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
-    let vals = check(min, max);
-    if (vals) {
-        document.body.style.cursor = "progress";
-        request();
+    let bounds = check(min, max);
+    if (bounds) {
+        request(navigator.onLine);
         setTimeout(function() {
-            prng(vals);
+            prng(bounds);
         }, 500);
     }
 }
