@@ -46,11 +46,11 @@ function check(min, max) {
 }
 
 function setQRN() {
-    document.body.style.cursor = "wait";
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
     let vals = check(min, max);
     if (vals) {
+        document.body.style.cursor = "progress";
         request();
         setTimeout(function() {
             prng(vals);
@@ -59,5 +59,5 @@ function setQRN() {
 }
 
 let rn = {index: 0};
-document.getElementById("gen").onclick = setQRN;
+document.getElementById("btn").onclick = setQRN;
 setQRN();

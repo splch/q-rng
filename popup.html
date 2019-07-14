@@ -9,7 +9,7 @@
                 text-align: center;
                 color: #222222;
             }
-            .btn {
+            #btn {
                 font-size: 14px;
                 width: 100%;
                 padding: 10px 14px;
@@ -18,7 +18,7 @@
                 background-color: #3b78e7;
                 color: white;
             }
-            .btn:focus {
+            #btn:focus {
                 outline: none;
             }
             .txt {
@@ -45,13 +45,13 @@
             <div style="position: absolute; width: 60%; left: 0px; overflow: auto;">
                 <p id="rn"></p>
             </div>
-            <div style="position: absolute; width: 40%; right: 0px; background: #ffffff;">
+            <div style="position: absolute; width: 40%; right: 0px;">
                 <p class="txt">Min</p>
                 <input id="min" class="inp" type="number" min="-9007199254740991" max="9007199254740991" value="1">
                 <p class="txt">Max</p>
                 <input id="max" class="inp" type="number" min="-9007199254740991" max="9007199254740991" value="10">
             </div>
         </div>
-        <button id="gen" class="btn">GENERATE</button>
+        <button id="btn">GENERATE</button>
     </body>
 </html>
