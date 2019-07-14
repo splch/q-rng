@@ -38,7 +38,7 @@ function check(min, max) {
         document.getElementById("min").value = min;
         document.getElementById("max").value = max;
     }
-    if (max - min > 65535) {
+    if (max - min > 2147483647) {
         document.getElementById("rn").innerHTML = "&#128565;";
         return;
     }
