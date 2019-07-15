@@ -6,12 +6,24 @@ function prng(bounds) {
 
 function request() {
     document.body.style.cursor = "progress";
+    let fail = function() {
+        if (!rn.qrn) {
+            document.getElementById("rn").title = "Error: PRNG";
+            document.getElementById("rn").style.color = "#444444";
+        }
+        document.body.style.cursor = "auto";
+    };
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
         document.body.style.cursor = "auto";
+        document.getElementById("rn").title = "";
+        document.getElementById("rn").style.color = "#222222";
+
     };
+    xhr.ontimeout = fail;
+    xhr.onerror = fail;
     xhr.send();
 }
 
@@ -36,7 +48,7 @@ function check(min, max) {
 function setQRN() {
     let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     if (bounds) {
-        if (navigator.onLine) request();
+        request();
         setTimeout(function() {
             prng(bounds);
         }, 500);
