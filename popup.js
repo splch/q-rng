@@ -9,7 +9,7 @@ function request() {
     let fail = function() {
         if (!rn.qrn) {
             document.getElementById("rn").title = "Error: PRNG";
-            document.getElementById("rn").style.color = "#444444";
+            document.getElementById("rn").style.color = "#666666";
         }
         document.body.style.cursor = "auto";
     };
