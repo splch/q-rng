@@ -4,7 +4,7 @@ function prng(bounds, len) {
     return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
 
-function request(len) {
+function request(bounds, len) {
     document.body.style.cursor = "progress";
     let fail = function() {
         rn.web = false;
@@ -14,7 +14,21 @@ function request(len) {
         }
         document.body.style.cursor = "auto";
     };
+    let load = function() {
+        if (len === 1) {
+            document.getElementById("rn").innerHTML = prng(bounds, len);
+            return;
+        }
+        if (rn.win) rn.win.close();
+        qrns = [];
+        for (let i = 0; i < len; i++) {
+            qrns.push(prng(bounds, len));
+        }
+        rn.win = window.open("", "_blank", "width=175,height=128", true);
+        rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+String(qrns)+"</p>");
+    };
     let xhr = new XMLHttpRequest();
+    xhr.timeout = 1000;
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+String(len)+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
@@ -22,9 +36,16 @@ function request(len) {
         document.body.style.cursor = "auto";
         document.getElementById("rn").title = "";
         document.getElementById("rn").style.color = "#222222";
+        load();
     };
-    xhr.ontimeout = fail;
-    xhr.onerror = fail;
+    xhr.ontimeout = function() {
+        fail();
+        load();
+    };
+    xhr.onerror = function() {
+        fail();
+        load();
+    };
     xhr.send();
 }
 
@@ -54,20 +75,7 @@ function setQRN() {
         return;
     }
     if (bounds && len) {
-        request(len);
-        if (len === 1) {
-            document.getElementById("rn").innerHTML = prng(bounds, 1);
-            return;
-        }
-        setTimeout(function() {
-            if (rn.win) rn.win.close();
-            qrns = [];
-            for (let i = 0; i < len; i++) {
-                qrns.push(prng(bounds, len));
-            }
-            rn.win = window.open("", "_blank", "width=175,height=128", true);
-            rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+String(qrns)+"</p>");
-        }, 500);
+        request(bounds, len);
     }
 }
 
