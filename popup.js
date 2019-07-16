@@ -21,15 +21,13 @@ function request(bounds, len) {
         }
         if (rn.win) rn.win.close();
         qrns = [];
-        for (let i = 0; i < len; i++) {
-            qrns.push(prng(bounds, len));
-        }
+        for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
         rn.win = window.open("", "_blank", "width=175,height=128", true);
-        rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+String(qrns)+"</p>");
+        rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
     };
     let xhr = new XMLHttpRequest();
-    xhr.timeout = 1000;
-    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+String(len)+"&type=uint16", true);
+    xhr.timeout = 5000;
+    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+len+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
         rn.web = true;
