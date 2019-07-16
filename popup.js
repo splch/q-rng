@@ -49,21 +49,22 @@ function setQRN() {
     let len = parseInt(document.getElementById("len").value);
     if (bounds && len) {
         request(len);
-        if (len > 1) {
-            clearInterval(rn.interval);
-            rn.interval = setInterval(function() {
-                if (rn.qrn.length === len) {
-                    let rn_window = window.open("", "QRNs", "width = 175px, height = 128px");
-                    qrns = [];
-                    for (let i = 0; i < len; i++) {
-                        qrns.push(prng(bounds, len))
-                    }
-                    rn_window.document.write(String(qrns)+"\n\n");
-                    clearInterval(rn.interval);
-                }
-            }, 100)
+        if (len <= 1) {
+            document.getElementById("rn").innerHTML = prng(bounds, 1);
+            return;
         }
-        else document.getElementById("rn").innerHTML = prng(bounds, len);
+        clearInterval(rn.interval);
+        rn.interval = setInterval(function() {
+            if (rn.qrn.length === len) {
+                let win = window.open("", "_blank", "width=175,height=128,location=no,menubar=no,status=no,titlebar=no", true);
+                qrns = [];
+                for (let i = 0; i < len; i++) {
+                    qrns.push(prng(bounds, len));
+                }
+                win.document.write("<p>"+String(qrns)+"</p>");
+                clearInterval(rn.interval);
+            }
+        }, 100);
     }
 }
 
