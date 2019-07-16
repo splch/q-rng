@@ -20,7 +20,6 @@ function request() {
         document.body.style.cursor = "auto";
         document.getElementById("rn").title = "";
         document.getElementById("rn").style.color = "#222222";
-
     };
     xhr.ontimeout = fail;
     xhr.onerror = fail;
