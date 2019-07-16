@@ -1,10 +1,10 @@
-function prng(bounds) {
-    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * (rn.qrn ? rn.qrn[rn.index++ % 15] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
+function prng(bounds, len) {
+    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * (rn.qrn ? rn.qrn[rn.index++ % len] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
     if (prn === 0) prn = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
-    document.getElementById("rn").innerHTML = Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
+    return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
 
-function request() {
+function request(len) {
     document.body.style.cursor = "progress";
     let fail = function() {
         if (!rn.qrn) {
@@ -14,7 +14,7 @@ function request() {
         document.body.style.cursor = "auto";
     };
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length=15&type=uint16", true);
+    xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+String(len)+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
         document.body.style.cursor = "auto";
@@ -46,11 +46,24 @@ function check(min, max) {
 
 function setQRN() {
     let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
-    if (bounds) {
-        request();
-        setTimeout(function() {
-            prng(bounds);
-        }, 500);
+    let len = parseInt(document.getElementById("len").value);
+    if (bounds && len) {
+        request(len);
+        if (len > 1) {
+            clearInterval(rn.interval);
+            rn.interval = setInterval(function() {
+                if (rn.qrn.length === len) {
+                    let rn_window = window.open("", "QRNs", "width = 175px, height = 128px");
+                    qrns = [];
+                    for (let i = 0; i < len; i++) {
+                        qrns.push(prng(bounds, len))
+                    }
+                    rn_window.document.write(String(qrns)+"\n\n");
+                    clearInterval(rn.interval);
+                }
+            }, 100)
+        }
+        else document.getElementById("rn").innerHTML = prng(bounds, len);
     }
 }
 

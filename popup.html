@@ -41,16 +41,20 @@
     </head>
     <body style="width: 175px; height: 120px; margin: 0px;">
         <div style="height: 75%; margin-top: 8px;">
-            <div style="position: absolute; width: 60%; left: 0px; overflow: auto;">
+            <div style="position: absolute; width: 60%; left: 0px; overflow-x: auto">
                 <p id="rn"></p>
             </div>
-            <div style="position: absolute; width: 40%; right: 0px;">
+            <div style="position: absolute; width: 40%; right: 0px; overflow-y: auto; height: 64%;">
                 <p class="txt">Min</p>
                 <input id="min" class="inp" type="number" min="-9007199254740991" max="9007199254740991" value="1">
                 <p class="txt">Max</p>
                 <input id="max" class="inp" type="number" min="-9007199254740991" max="9007199254740991" value="10">
+                <p class="txt">Quanitity</p>
+                <input id="len" class="inp" type="number" value="1">
             </div>
         </div>
-        <button id="btn">GENERATE</button>
+        <div style="position: absolute; bottom: 0; width: 100%;">
+            <button id="btn">GENERATE</button>
+        </div>
     </body>
 </html>
