@@ -15,7 +15,6 @@ function request(len) {
         document.body.style.cursor = "auto";
     };
     let xhr = new XMLHttpRequest();
-    xhr.timeout = 5000;
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+String(len)+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
@@ -67,7 +66,7 @@ function setQRN() {
                 qrns.push(prng(bounds, len));
             }
             rn.win = window.open("", "_blank", "width=175,height=128", true);
-            rn.win.document.write(rn.web ? qrns : "<p style='color: #666666;' title='Error: PRNG'>"+String(qrns)+"</p>");
+            rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+String(qrns)+"</p>");
         }, 500);
     }
 }
