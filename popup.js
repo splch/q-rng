@@ -12,7 +12,6 @@ function request(bounds, len) {
             document.getElementById("rn").title = "Error: PRNG";
             document.getElementById("rn").style.color = "#666666";
         }
-        document.body.style.cursor = "auto";
     };
     let load = function() {
         if (len === 1) {
@@ -24,6 +23,7 @@ function request(bounds, len) {
         for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
         rn.win = window.open("", "_blank", "width=175,height=128", true);
         rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
+        document.body.style.cursor = "auto";
     };
     let xhr = new XMLHttpRequest();
     xhr.timeout = 10000;
@@ -31,7 +31,6 @@ function request(bounds, len) {
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
         rn.web = true;
-        document.body.style.cursor = "auto";
         document.getElementById("rn").title = "";
         document.getElementById("rn").style.color = "#222222";
         load();
