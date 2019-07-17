@@ -26,7 +26,7 @@ function request(bounds, len) {
         rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
     };
     let xhr = new XMLHttpRequest();
-    xhr.timeout = 5000;
+    xhr.timeout = 10000;
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+len+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
