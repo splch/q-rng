@@ -16,6 +16,7 @@ function request(bounds, len) {
     let load = function() {
         if (len === 1) {
             document.getElementById("rn").innerHTML = prng(bounds, len);
+            document.body.style.cursor = "auto";
             return;
         }
         if (rn.win) rn.win.close();
