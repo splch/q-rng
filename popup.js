@@ -25,7 +25,7 @@ function load(bounds, len, web) {
 function request(bounds, len) {
     document.body.style.cursor = "progress";
     let xhr = new XMLHttpRequest();
-    xhr.timeout = 10000;
+    xhr.timeout = 5000;
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+len+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
