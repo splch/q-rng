@@ -69,13 +69,11 @@ function check(min, max) {
 function setQRN() {
     let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     let len = parseInt(document.getElementById("len").value);
-    if (len <= 0) {
-        document.getElementById("rn").innerHTML = "";
-        return;
+    if (!len || len <= 0) {
+        len = 1;
+        document.getElementById("len").value = len;
     }
-    if (bounds && len) {
-        request(bounds, len);
-    }
+    if (bounds) request(bounds, len);
 }
 
 let rn = {index: 0};
