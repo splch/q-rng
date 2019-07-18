@@ -2,7 +2,7 @@
   "name": "Quantum Random Number Generator",
   "short_name": "q-rng",
   "description": "A true quantum random number generator.",
-  "version": "0.40",
+  "version": "0.41",
   "browser_action": {
     "default_title": "q-rng",
     "default_icon": "icon.png",

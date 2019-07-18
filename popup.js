@@ -1,5 +1,5 @@
 function prng(bounds, len) {
-    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * (rn.qrn ? rn.qrn[rn.index++ % len] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
+    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * ((rn.qrn && rn.qrn.length === len) ? rn.qrn[rn.index++ % len] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
     if (prn === 0) prn = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
     return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
@@ -14,7 +14,7 @@ function load(bounds, len) {
     qrns = [];
     for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
     rn.win = window.open("", "_blank", "width=175,height=128", true);
-    rn.win.document.write(rn.web ? qrns : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
+    rn.win.document.write(rn.web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
     document.body.style.cursor = "auto";
 };
 
