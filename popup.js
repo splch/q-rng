@@ -4,8 +4,12 @@ function prng(bounds, len) {
     return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
 
-function load(bounds, len) {
+function load(bounds, len, web) {
     if (len === 1) {
+        if (!web && !rn.qrn) {
+            document.getElementById("rn").title = "Error: PRNG";
+            document.getElementById("rn").style.color = "#666666";
+        }
         document.getElementById("rn").innerHTML = prng(bounds, len);
         document.body.style.cursor = "auto";
         return;
@@ -14,17 +18,8 @@ function load(bounds, len) {
     qrns = [];
     for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
     rn.win = window.open("", "_blank", "width=175,height=128", true);
-    rn.win.document.write(rn.web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
+    rn.win.document.write(web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>");
     document.body.style.cursor = "auto";
-};
-
-function fail(bounds, len) {
-    rn.web = false;
-    if (!rn.qrn) {
-        document.getElementById("rn").title = "Error: PRNG";
-        document.getElementById("rn").style.color = "#666666";
-    }
-    load(bounds, len);
 };
 
 function request(bounds, len) {
@@ -34,16 +29,13 @@ function request(bounds, len) {
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+len+"&type=uint16", true);
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
-        rn.web = true;
-        document.getElementById("rn").title = "";
-        document.getElementById("rn").style.color = "#222222";
-        load(bounds, len);
+        load(bounds, len, true);
     };
     xhr.ontimeout = function() {
-        fail(bounds, len);
+        load(bounds, len, false);
     };
     xhr.onerror = function() {
-        fail(bounds, len);
+        load(bounds, len, false);
     };
     xhr.send();
 }
@@ -67,12 +59,12 @@ function check(min, max) {
 }
 
 function setQRN() {
-    let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     let len = parseInt(document.getElementById("len").value);
     if (!len || len <= 0) {
         len = 1;
         document.getElementById("len").value = len;
     }
+    let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     if (bounds) request(bounds, len);
 }
 
