@@ -6,17 +6,17 @@ function prng(bounds, len) {
 
 function load(bounds, len, web) {
     if (len === 1) {
+        document.getElementById("rn").innerText = prng(bounds, len);
         if (!web && !rn.qrn) {
             document.getElementById("rn").title = "Error: PRNG";
             document.getElementById("rn").style.color = "#666666";
         }
-        document.getElementById("rn").innerText = prng(bounds, len);
     }
     else {
         if (rn.win) rn.win.close();
         let qrns = [];
         for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
-        rn.win = window.open("", "_blank", "width=175,height=128", true);
+        rn.win = window.open("", "_blank", "width=175,height=129", true);
         rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + (web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
     }
     document.body.style.cursor = "auto";
@@ -25,8 +25,8 @@ function load(bounds, len, web) {
 function request(bounds, len) {
     document.body.style.cursor = "progress";
     let xhr = new XMLHttpRequest();
-    xhr.timeout = 5000;
     xhr.open("GET", "https://qrng.anu.edu.au/API/jsonI.php?length="+len+"&type=uint16", true);
+    xhr.timeout = 5000;
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
         load(bounds, len, true);
@@ -59,12 +59,12 @@ function check(min, max) {
 }
 
 function setQRN() {
+    let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     let len = parseInt(document.getElementById("len").value);
     if (!len > 0) {
         len = 1;
         document.getElementById("len").value = len;
     }
-    let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
     if (bounds) request(bounds, len);
 }
 
