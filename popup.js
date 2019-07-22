@@ -1,7 +1,7 @@
 function prng(bounds) {
     let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * (rn.qrn ? rn.qrn[rn.index++ % rn.qrn.length] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
     if (prn === 0) prn = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
-    return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
+    return (prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0]) + bounds[0]).toFixed(Math.max(String(bounds[0]).split('.')[1] ? String(bounds[0]).split('.')[1].length : 0, String(bounds[1]).split('.')[1] ? String(bounds[1]).split('.')[1].length : 0));
 }
 
 function load(bounds, len, web = false) {
@@ -17,7 +17,7 @@ function load(bounds, len, web = false) {
         let qrns = [];
         for (let i = 0; i < len; i++) qrns.push(prng(bounds));
         rn.win = window.open("", "_blank", "width=175,height=129", true);
-        rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + ((web || rn.qrn) ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
+        rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + (web || rn.qrn ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
     }
     document.body.style.cursor = "auto";
 }
@@ -29,7 +29,7 @@ function request(bounds, len) {
     xhr.timeout = 5000;
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
-        load(bounds, rn.qrn.length, true);
+        load(bounds, len, true);
     };
     xhr.ontimeout = function() {
         load(bounds, len);
@@ -41,8 +41,6 @@ function request(bounds, len) {
 }
 
 function check(min, max) {
-    if (isNaN(min)) min = 0;
-    if (isNaN(max)) max = 0;
     if (min === max) {
         document.getElementById("rn").innerText = min;
         return;
@@ -59,7 +57,7 @@ function check(min, max) {
 }
 
 function setQRN() {
-    let bounds = check(parseFloat(document.getElementById("min").value), parseFloat(document.getElementById("max").value));
+    let bounds = check(Number(document.getElementById("min").value), Number(document.getElementById("max").value));
     let len = parseInt(document.getElementById("len").value);
     if (!len > 0) {
         len = 1;
