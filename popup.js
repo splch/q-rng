@@ -17,7 +17,7 @@ function load(bounds, len, web = false) {
         let qrns = [];
         for (let i = 0; i < len; i++) qrns.push(prng(bounds));
         rn.win = window.open("", "_blank", "width=175,height=129", true);
-        rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + (web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
+        rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + ((web || rn.qrn) ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
     }
     document.body.style.cursor = "auto";
 }
