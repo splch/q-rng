@@ -1,12 +1,12 @@
-function prng(bounds, len) {
-    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * ((rn.qrn && rn.qrn.length === len) ? rn.qrn[rn.index++ % len] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
+function prng(bounds) {
+    let prn = window.crypto.getRandomValues(new Uint16Array(1))[0] * (rn.qrn ? rn.qrn[rn.index++ % rn.qrn.length] : window.crypto.getRandomValues(new Uint16Array(1))[0]);
     if (prn === 0) prn = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 * 2147483646) + 1;
     return Math.floor(prn % 2147483647 * 48271 % 2147483647 / 2147483647 * (bounds[1] - bounds[0] + 1) + bounds[0]);
 }
 
-function load(bounds, len, web) {
+function load(bounds, len, web = false) {
     if (len === 1) {
-        document.getElementById("rn").innerText = prng(bounds, len);
+        document.getElementById("rn").innerText = prng(bounds);
         if (!web && !rn.qrn) {
             document.getElementById("rn").title = "Error: PRNG";
             document.getElementById("rn").style.color = "#666666";
@@ -15,12 +15,12 @@ function load(bounds, len, web) {
     else {
         if (rn.win) rn.win.close();
         let qrns = [];
-        for (let i = 0; i < len; i++) qrns.push(prng(bounds, len));
+        for (let i = 0; i < len; i++) qrns.push(prng(bounds));
         rn.win = window.open("", "_blank", "width=175,height=129", true);
         rn.win.document.write("<a href=data:text/plain,"+qrns+" download='qrns-"+bounds+"'>Save</a>" + (web ? "<p style='word-break: break-all; color: #222222;'>"+qrns+"</p>" : "<p style='word-break: break-all; color: #666666;' title='Error: PRNG'>"+qrns+"</p>"));
     }
     document.body.style.cursor = "auto";
-};
+}
 
 function request(bounds, len) {
     document.body.style.cursor = "progress";
@@ -29,13 +29,13 @@ function request(bounds, len) {
     xhr.timeout = 5000;
     xhr.onload = function() {
         rn.qrn = JSON.parse(this.responseText).data;
-        load(bounds, len, true);
+        load(bounds, rn.qrn.length, true);
     };
     xhr.ontimeout = function() {
-        load(bounds, len, false);
+        load(bounds, len);
     };
     xhr.onerror = function() {
-        load(bounds, len, false);
+        load(bounds, len);
     };
     xhr.send();
 }
